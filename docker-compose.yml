@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  accountmicroservice:
+    image: ${DOCKER_REGISTRY-}accountmicroservice
+    build:
+      context: .
+      dockerfile: AccountMicroservice/Dockerfile
