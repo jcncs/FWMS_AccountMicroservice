@@ -78,5 +78,29 @@ namespace AccountMicroservice.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("GetMyProfile/{userId}")]
+        public async Task<IActionResult> GetMyProfile(string userId)
+        {
+            var profile = await _dbcontext.UserProfileView.FirstOrDefaultAsync(u => u.UserId == userId);
+
+            return new OkObjectResult(profile);
+        }
+
+        [HttpGet("GetEmailsByRoleId/{roleId}")]
+        public async Task<IActionResult> GetEmails(string roleId)
+        {
+            var profile = await _dbcontext.UserProfileView.Where (s => s.RoleId == roleId).Select( s => new { Name = s.UserName, Role = s.RoleName, EmailAddr = s.Email }).ToListAsync();
+
+            return new OkObjectResult(profile);
+        }
+
+        [HttpGet("GetEmailByUserId/{userId}")]
+        public async Task<IActionResult> GetEmailByUserId(string userId)
+        {
+            var profile = await _dbcontext.UserProfileView.Where(s => s.UserId == userId).Select(s => new { Name = s.UserName, EmailAddr = s.Email }).ToListAsync();
+
+            return new OkObjectResult(profile);
+        }
     }
 }

@@ -16,6 +16,8 @@ namespace AccountMicroservice.DBContexts
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<UserProfileView> UserProfileView { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             foreach (var entityType in builder.Model.GetEntityTypes())
