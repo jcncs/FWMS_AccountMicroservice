@@ -54,6 +54,7 @@ namespace AccountMicroservice.Controllers
             return Ok(token);
         }
 
+
         [HttpGet("verify")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> VerifyToken()
@@ -101,6 +102,23 @@ namespace AccountMicroservice.Controllers
             var profile = await _dbcontext.UserProfileView.Where(s => s.UserId == userId).Select(s => new { Name = s.UserName, EmailAddr = s.Email }).ToListAsync();
 
             return new OkObjectResult(profile);
+        }
+
+        [HttpGet("GetUserMenu/{userId}")]
+        public async Task<IActionResult> GetUserMenu(string userId)
+        {
+            var profile = await _dbcontext.UserProfileView.Where(s => s.UserId == userId).Select(s => new { Name = s.UserName, Role = s.RoleName,EmailAddr = s.Email,HomePhone=s.HomePhone, OfficePhone=s.OfficePhone}).ToListAsync();
+
+            return new OkObjectResult(profile);
+        }
+        [HttpGet("GetUserRole/{userId}")]
+        public async Task<IActionResult> GetUserRole(string userId)
+        {
+            var roleId = await _dbcontext.User_Roles.FirstOrDefaultAsync(u => u.UserId == userId);
+
+            var Role = await _dbcontext.Roles.SingleOrDefaultAsync(u => u.RoleId == roleId.RoleId);
+
+            return new OkObjectResult(Role);
         }
     }
 }

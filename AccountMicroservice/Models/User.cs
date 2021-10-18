@@ -15,5 +15,7 @@ namespace AccountMicroservice.Models
         public string UpdatedBy { get; set; }
         public DateTime UpdateDate { get; set; }
         public string PwdHash { get; set; }
+
+        public User_Info user_Info { get; set; }
     }
 }

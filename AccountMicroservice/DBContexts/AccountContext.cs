@@ -16,6 +16,12 @@ namespace AccountMicroservice.DBContexts
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<User_Role> User_Roles { get; set; }
+
+        public DbSet<User_Info> User_Info { get; set; }
+
         public DbSet<UserProfileView> UserProfileView { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
