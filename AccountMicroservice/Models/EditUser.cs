@@ -17,5 +17,7 @@ namespace AccountMicroservice.Models
         public string HomePhone { get; set; }
 
         public string OfficePhone { get; set; }
+
+        public string roleName { get; set; }
     }
 }

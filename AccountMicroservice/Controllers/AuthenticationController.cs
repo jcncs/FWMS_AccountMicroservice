@@ -189,7 +189,6 @@ namespace AccountMicroservice.Controllers
             };
 
             _dbcontext.Users.Add(newUser);
-
             await _dbcontext.SaveChangesAsync();
 
             User_Info new_User_Info = new User_Info()
@@ -207,8 +206,28 @@ namespace AccountMicroservice.Controllers
 
             //Add new user info
             _dbcontext.User_Info.Add(new_User_Info);
+            await _dbcontext.SaveChangesAsync();
+
+
+            //Assign role
+            //Check if username exist
+            var role = await _dbcontext.Role.FirstOrDefaultAsync(u => u.RoleName == user.roleName);
+
+            User_Role addUserRole = new User_Role()
+            {
+                UserId = newUser.UserId,
+                RoleId = role.RoleId,
+                CreatedBy = user.CreatedBy,
+                CreatedDate = DateTime.Now,
+                UpdateBy = user.CreatedBy,               
+                UpdateDate = DateTime.Now,
+
+            };
+
+            _dbcontext.User_Roles.Add(addUserRole);
 
             await _dbcontext.SaveChangesAsync();
+
 
             return Ok();
         }
@@ -250,6 +269,19 @@ namespace AccountMicroservice.Controllers
 
             await _dbcontext.SaveChangesAsync();
 
+
+            //Assign role
+            //Check if username exist
+            var userrole = await _dbcontext.User_Roles.FirstOrDefaultAsync(u => u.UserId == userToUpdate.UserId);
+
+            var role = await _dbcontext.Role.FirstOrDefaultAsync(u => u.RoleName.Equals(userToUpdate.roleName));
+
+            userrole.UpdateDate = DateTime.Now;
+            userrole.RoleId = role.RoleId;
+            userrole.UpdateBy = userToUpdate.UpdatedBy;
+
+            _dbcontext.User_Roles.Update(userrole);
+            await _dbcontext.SaveChangesAsync();
             //Return new object
             return Ok();
         }

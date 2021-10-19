@@ -15,8 +15,8 @@ namespace AccountMicroservice.Models
         public string CreatedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
-        public Role role { get; set; }
+        public string UpdateBy { get; set; }
+         public DateTime UpdateDate { get; set; }
 
     }
 }
