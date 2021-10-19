@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AccountMicroservice.Models
 {
-    public class User
+    public class AddUser
     {
         public string UserId { get; set; }
         public string UserName { get; set; }
@@ -16,5 +16,9 @@ namespace AccountMicroservice.Models
         public DateTime UpdateDate { get; set; }
         public string PwdHash { get; set; }
 
+        public string Email { get; set; }
+        public string HomePhone { get; set; }
+
+        public string OfficePhone { get; set; }
     }
 }

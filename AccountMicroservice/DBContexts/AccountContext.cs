@@ -16,7 +16,7 @@ namespace AccountMicroservice.DBContexts
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<Role> Role { get; set; }
 
         public DbSet<User_Role> User_Roles { get; set; }
 

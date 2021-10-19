@@ -116,9 +116,145 @@ namespace AccountMicroservice.Controllers
         {
             var roleId = await _dbcontext.User_Roles.FirstOrDefaultAsync(u => u.UserId == userId);
 
-            var Role = await _dbcontext.Roles.SingleOrDefaultAsync(u => u.RoleId == roleId.RoleId);
+            var Role = await _dbcontext.Role.SingleOrDefaultAsync(u => u.RoleId == roleId.RoleId);
 
             return new OkObjectResult(Role);
         }
+
+        [Route("CreateRole")]
+        [HttpPost]
+        public async Task<IActionResult> AddRole([FromBody] Role roleToAdd)
+        {
+            var role = await _dbcontext.Role.FirstOrDefaultAsync(u => u.RoleName == roleToAdd.RoleName);
+
+            if (role != null)
+            {
+                return NotFound(new { Message = $"role already exist" });
+            }
+
+            roleToAdd.RoleId = Guid.NewGuid().ToString();
+            roleToAdd.UpdateDate = DateTime.Now;
+            roleToAdd.CreatedDate = DateTime.Now;
+
+            _dbcontext.Role.Add(roleToAdd);
+
+            await _dbcontext.SaveChangesAsync();
+
+            return Ok();
+        }
+        //Edit role
+        [Route("editrole")]
+        [HttpPost]
+        public async Task<IActionResult> EditRole([FromBody] Role roleToEdit)
+        {
+            var role = await _dbcontext.Role.FirstOrDefaultAsync(u => u.RoleId == roleToEdit.RoleId);
+
+            if (role == null)
+            {
+                return NotFound(new { Message = $"role does not exist" });
+            }
+
+            role = roleToEdit;
+            role.UpdateDate = DateTime.Now;
+
+            _dbcontext.Role.Update(role);
+
+            await _dbcontext.SaveChangesAsync();
+
+            return Ok();
+        }
+        //Create user
+        [Route("createUser")]
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] AddUser user)
+        {
+            //Check if username exist
+            var username = await _dbcontext.Users.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+
+            if (username != null)
+            {
+                return NotFound(new { Message = $"Username already exist" });
+            }
+
+            User newUser = new User()
+            {
+                UserId = Guid.NewGuid().ToString(),
+                UserName = user.UserName,
+                CreatedBy = user.CreatedBy,
+                CreatedDate = DateTime.Now,
+                UpdatedBy = user.CreatedBy,
+                UpdateDate = DateTime.Now,
+                PwdHash = user.PwdHash,
+                Disable = "0"
+            };
+
+            _dbcontext.Users.Add(newUser);
+
+            await _dbcontext.SaveChangesAsync();
+
+            User_Info new_User_Info = new User_Info()
+            {
+                UserId = newUser.UserId,
+                UserinfoId = newUser.UserId,
+                HomePhone = user.HomePhone,
+                OfficePhone = user.OfficePhone,
+                Email =user.Email,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                UpdatedBy = user.CreatedBy,
+                CreatedBY = user.CreatedBy
+            };
+
+            //Add new user info
+            _dbcontext.User_Info.Add(new_User_Info);
+
+            await _dbcontext.SaveChangesAsync();
+
+            return Ok();
+        }
+        [Route("editUser")]
+        [HttpPost]
+        //Edit user
+        public async Task<IActionResult> EditUser([FromBody] EditUser userToUpdate)
+        {
+            //Find user name
+            var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.UserId == userToUpdate.UserId);
+
+            if (user == null)
+            {
+                return NotFound(new { Message = $"Username does not exist" });
+            }
+
+            user.UserName = userToUpdate.UserName;
+            user.PwdHash = userToUpdate.PwdHash;
+            user.Disable = userToUpdate.Disable;
+            user.UpdateDate = DateTime.Now;
+            user.UpdatedBy = userToUpdate.UpdatedBy;
+
+            _dbcontext.Users.Update(user);
+
+            var user_info = await _dbcontext.User_Info.FirstOrDefaultAsync(u => u.UserId == userToUpdate.UserId);
+
+            if (user_info == null)
+            {
+                return NotFound(new { Message = $"UserInfo does not exist" });
+            }
+
+            user_info.HomePhone = userToUpdate.HomePhone;
+            user_info.OfficePhone = userToUpdate.OfficePhone;
+            user_info.UpdatedDate = DateTime.Now;
+            user_info.UpdatedBy = userToUpdate.UpdatedBy;
+            user_info.Email = userToUpdate.Email;
+
+            _dbcontext.User_Info.Update(user_info);
+
+            await _dbcontext.SaveChangesAsync();
+
+            //Return new object
+            return Ok();
+        }
+
+
+
     }
 }
