@@ -121,6 +121,21 @@ namespace AccountMicroservice.Controllers
             return new OkObjectResult(Role);
         }
 
+        [HttpGet("GetAllRoles")]
+        public async Task<List<Role>> GetRoleDrop()
+        {
+            var Role = await _dbcontext.Role.OrderBy(c => c.RoleName).ToListAsync();
+
+            return Role;
+        }
+        [HttpGet("GetAllUser")]
+        public async Task<List<UserProfileView>> GetUsers()
+        {
+            var profile = await _dbcontext.UserProfileView.OrderBy(c => c.UserId).ToListAsync();
+
+            return profile;
+        }
+
         [Route("CreateRole")]
         [HttpPost]
         public async Task<IActionResult> AddRole([FromBody] Role roleToAdd)
@@ -285,7 +300,11 @@ namespace AccountMicroservice.Controllers
             //Return new object
             return Ok();
         }
+        private List<Role> ChangeRoleDropDown(List<Role> items)
+        {
 
+            return items;
+        }
 
 
     }
