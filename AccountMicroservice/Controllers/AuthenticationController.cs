@@ -77,13 +77,23 @@ namespace AccountMicroservice.Controllers
                 return Unauthorized();
             }
 
-            var userResponse = await _dbcontext
-                            .UserProfileView
-                            .Where(u => u.UserName == username.Value)
-                            .Select(s => new { UserId = s.UserId, UserName = s.UserName, RoleId = s.RoleId}).FirstOrDefaultAsync();
+            //var userResponse = await _dbcontext
+            //                .UserProfileView
+            //                .Where(u => u.UserName == username.Value)
+            //                .Select(s => new { UserId = s.UserId, UserName = s.UserName, RoleId = s.RoleId}).FirstOrDefaultAsync();
 
-            return new OkObjectResult(userResponse);
+            //return new OkObjectResult(userResponse);
+            return NoContent();
         }
+
+        [HttpGet("GetUserByUserName/{username}")]
+        public async Task<IActionResult> GetUserIdByUserName(string username)
+        {
+            var profile = await _dbcontext.UserProfileView.FirstOrDefaultAsync(u => u.UserName == username);
+
+            return new OkObjectResult(profile);
+        }
+
 
         [HttpGet("GetMyProfile/{userId}")]
         public async Task<IActionResult> GetMyProfile(string userId)
