@@ -8,7 +8,7 @@
     "environment"    : "AccountMicroservice-test",
     "enable-xray"    : false,
     "enhanced-health-type" : "basic",
-    "additional-options"   : "\"aws:autoscaling:launchconfiguration,SecurityGroups\"=\"sg-023b267c650141279,sg-05ef275cc1bd9d6e5\";\"aws:ec2:vpc,Subnets\"=\"subnet-016caafd40c6320aa\"",
+    "additional-options"   : "",
     "solution-stack"       : "64bit Amazon Linux 2 v2.2.6 running .NET Core",
     "environment-type"     : "SingleInstance",
     "cname"                : "accountmicroservice-test",
