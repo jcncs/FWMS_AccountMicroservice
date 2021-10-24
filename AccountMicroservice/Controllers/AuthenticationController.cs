@@ -321,6 +321,12 @@ namespace AccountMicroservice.Controllers
             return items;
         }
 
-
+        [HttpGet("GetUserIdByEmail/{email}")]
+        public async Task<IActionResult> GetUserIdByEmail(string email)
+        {
+            var userid = await _dbcontext.UserProfileView.Where(u => u.Email == email)
+                                                .Select(s => new { UserId = s.UserId }).FirstOrDefaultAsync();
+            return new OkObjectResult(userid);
+        }
     }
 }
