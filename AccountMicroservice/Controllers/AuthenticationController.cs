@@ -203,7 +203,7 @@ namespace AccountMicroservice.Controllers
 
             if (username != null)
             {
-                return NotFound(new { Message = $"Username already exist" });
+                return Ok("Username already exist");
             }
 
             User newUser = new User()
