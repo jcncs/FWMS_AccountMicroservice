@@ -33,6 +33,11 @@ namespace AccountMicroservice.DBContexts
                 builder.Entity(entityType.ClrType).ToTable(entityType.ClrType.Name);
             }
 
+            builder.Entity<User_Role>().HasKey(table => new {
+                table.RoleId,
+                table.UserId
+            });
+
             base.OnModelCreating(builder);
 
             builder
